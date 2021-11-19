@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	
 	<annotation-driven />
 
 	<!-- JSP에서 사용될 자바스크립트나 이미지 파일 경로를 지정 -->
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- 뷰리졸버 빈을 생성하면서           응답할 JSP의 경로를 지정한다 -->
-<!-- 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
-<!-- 		<beans:property name="prefix" value="/WEB-INF/views/" /> -->
-<!-- 		<beans:property name="suffix" value=".jsp" /> -->
-<!-- 	</beans:bean> -->
+	<!-- 뷰리졸버 빈을 생성하면서 응답할 JSP의 경로를 지정한다 -->
+	<!-- <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
+	<!-- <beans:property name="prefix" value="/WEB-INF/views/" /> -->
+	<!-- <beans:property name="suffix" value=".jsp" /> -->
+	<!-- </beans:bean> -->
 
-	
-	<beans:bean id="titlesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+
+	<beans:bean id="titlesConfigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<beans:property name="definitions">
 			<beans:list>
 				<!-- 패키지 tiles의 모든설정 xml 파일을 읽어들인다. -->
 				<beans:value>classpath:tiles/*.xml</beans:value>
 			</beans:list>
 		</beans:property>
-		<beans:property name="preparerFactoryClass" value="org.springframework.web.servlet.view.tiles2.SpringBeanPreparerFactory"/>
+		<beans:property name="preparerFactoryClass"
+			value="org.springframework.web.servlet.view.tiles2.SpringBeanPreparerFactory" />
 	</beans:bean>
-	
-	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+
+	<beans:bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<beans:property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles2.TilesView" />
 	</beans:bean>
-		
+
 	<!-- 패키지와 어노테이션을 지정한다 -->
-	<context:component-scan base-package="com.myspring.pro27" />
-	
-	
-	
+	<context:component-scan
+		base-package="com.myspring.pro27" />
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*/*.do" />
+			<beans:bean
+				class="com.myspring.pro27.member.interceptor.ViewNameInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+
 </beans:beans>
